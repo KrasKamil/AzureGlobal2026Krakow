@@ -86,6 +86,10 @@ module "app_service" {
   identity_client_id  = module.managed_identity.managed_identity_client_id 
   app_settings = {
     "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key
+    "DB_SERVER"   = module.mssql_server.sql_server_fqdn
+    "DB_NAME"     = "webappdb"
+    "DB_USER"     = "sqladmin"
+    "DB_PASSWORD" = "TwojeSuperHaslo123!"
   }
 }
 module "container_registry" {
