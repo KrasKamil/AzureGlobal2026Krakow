@@ -31,3 +31,13 @@ network_acls = {
   bypass = "AzureServices"
   }
 }
+
+module "managed_identity" {
+  source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=managed_identity/v1.0.0"
+  name = "Kamil_Managed_identity"
+  resource_group = {
+    name     = "rg-user9"
+    location = "polandcentral" 
+  }
+
+}
