@@ -62,6 +62,6 @@ module "mssql_server" {
     location = "polandcentral" 
   }
   sql_server_admin = "KamilAdmin"
-  sql_server_name = "MySQLKamilDatabase"
+   sql_server_name    = "mysql-kamil-database-unique" 
   sql_server_version = "12.0"
 }
