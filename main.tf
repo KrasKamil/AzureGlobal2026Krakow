@@ -88,3 +88,17 @@ module "app_service" {
     "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key
   }
 }
+module "service_plan" {
+  source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=service_plan/v2.0.0"
+  app_service_plan_name = "asp-kamil-user9-service-plan"
+  resource_group = {
+    name     = "rg-user9"
+    location = "polandcentral" 
+  }
+  sku_name = "B1"
+  tags = {
+    Environment = "Dev"
+    Owner       = "Kamil"
+    Project     = "GlobalAzure2026"
+  }
+}
