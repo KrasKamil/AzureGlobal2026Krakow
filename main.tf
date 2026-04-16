@@ -67,10 +67,25 @@ module "mssql_server" {
 }
 module "application_insights" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=application_insights/v1.0.0"
-application_insights_name = "smartappKamilhouse"
-log_analytics_name = "kamilloganalyticsworkspace"
+  application_insights_name = "smartappKamilhouse"
+  log_analytics_name = "kamilloganalyticsworkspace"
   resource_group = {
     name     = "rg-user9"
     location = "polandcentral" 
+  }
+}
+module "app_service" {
+  source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=app_service/v1.0.0"
+  app_service_name = "kamil-webapp-unique"
+  resource_group = {
+    name     = "rg-user9"
+    location = "polandcentral" 
+  }
+  app_service_plan_id = module.service_plan.app_service_plan.id
+  identity_id        = module.managed_identity.managed_identity.id
+  identity_client_id  = module.managed_identity.managed_identity.client_id
+  app_settings = {
+    "INSTRUMENTATION_KEY" = module.application_insights.application_insights.instrumentation_key
+    "DB_SERVER"           = module.mssql_server.mssql_server.fully_qualified_domain_name
   }
 }
