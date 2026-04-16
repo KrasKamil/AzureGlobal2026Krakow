@@ -89,7 +89,7 @@ module "app_service" {
     "DB_SERVER"   = module.mssql_server.sql_server_fqdn
     "DB_NAME"     = "webappdb"
     "DB_USER"     = "sqladmin"
-    "DB_PASSWORD" = "TwojeSuperHaslo123!"
+    "DB_PASSWORD" = "mojeSuperHaslo123!"
   }
 }
 module "container_registry" {
