@@ -82,8 +82,8 @@ module "app_service" {
     location = "polandcentral" 
   }
   app_service_plan_id = module.service_plan.app_service_plan.id
-  identity_id        = module.managed_identity.managed_identity.id
-  identity_client_id  = module.managed_identity.managed_identity.client_id
+  identity_id        = module.managed_identity.managed_identity_id.id
+  identity_client_id  = module.managed_identity.managed_identity_client_id.id 
   app_settings = {
     "INSTRUMENTATION_KEY" = module.application_insights.application_insights.instrumentation_key
     "DB_SERVER"           = module.mssql_server.mssql_server.fully_qualified_domain_name
