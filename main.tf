@@ -41,3 +41,17 @@ module "managed_identity" {
   }
 
 }
+module "service_plan" {
+  source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=service_plan/v2.0.0"
+  app_service_plan_name = "KamilAppServicePlan"
+  resource_group = {
+    name     = "rg-user9"
+    location = "polandcentral" 
+  }
+sku_name = "B1"
+tags = {
+    Environment = "Dev"
+    Owner       = "Kamil"
+    Project     = "GlobalAzure2026"
+  }
+}
