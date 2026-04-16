@@ -86,6 +86,6 @@ module "app_service" {
   identity_client_id  = module.managed_identity.managed_identity_client_id.id 
   app_settings = {
     "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key.id
-    "DB_SERVER"           = module.mssql_server.mssql_server.fully_qualified_domain_name
+    "DB_SERVER"           = module.mssql_server.fully_qualified_domain_name
   }
 }
