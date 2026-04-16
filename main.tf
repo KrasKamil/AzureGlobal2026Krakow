@@ -27,7 +27,7 @@ module "keyvault" {
     name     = "rg-user9"
     location = "polandcentral" 
   }
-network_acl{
+network_acl = {
   bypass = "AzureServices"
   default_action = "Deny"
 }
