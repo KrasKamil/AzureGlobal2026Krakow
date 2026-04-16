@@ -22,13 +22,12 @@ terraform {
 module "keyvault" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=keyvault/v1.0.0"
   keyvault_name = "kamilvuser9"
-  network_acls = 
   resource_group = {
     name     = "rg-user9"
     location = "polandcentral" 
   }
-network_acl = {
-  bypass = "AzureServices"
+network_acls = {
   default_action = "Deny"
-}
+  bypass = "AzureServices"
+  }
 }
