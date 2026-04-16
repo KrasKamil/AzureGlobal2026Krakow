@@ -85,6 +85,6 @@ module "app_service" {
   identity_id        = module.managed_identity.managed_identity_id.id
   identity_client_id  = module.managed_identity.managed_identity_client_id.id 
   app_settings = {
-    "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key.id
+    "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key
   }
 }
