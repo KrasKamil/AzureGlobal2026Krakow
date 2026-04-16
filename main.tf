@@ -68,7 +68,7 @@ module "mssql_server" {
 module "application_insights" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=application_insights/v1.0.0"
 application_insights_name = "smartappKamilhouse"
-log_analytics_name = "kamil_log_analyticsworkspace."
+log_analytics_name = "kamil-log-analyticsworkspace."
   resource_group = {
     name     = "rg-user9"
     location = "polandcentral" 
