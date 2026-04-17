@@ -121,7 +121,7 @@ module "app_service" {
     "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key
     "WEBSITES_PORT" = "8080"
     "WEBSITES_CONTAINER_START_TIME_LIMIT" = "1800"
-    "ConnectionStrings__DefaultConnection" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.db_connection_string.versionless_id})"
+    "ConnectionStrings__RazorPagesMovieContext" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.db_connection_string.versionless_id})"
     "DB_SERVER"   = module.mssql_server.server.fully_qualified_domain_name
     "DB_NAME"     = "webappdb"
     "DB_USER"     = "sqladmin"
