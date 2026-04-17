@@ -91,3 +91,8 @@ jobs:
             --resource-group rg-user9 \
             --docker-custom-image-name ${{ secrets.ACR_LOGIN_SERVER }}/example-webapp:latest \
             --docker-registry-server-url https://${{ secrets.ACR_LOGIN_SERVER }}
+      - name: Fetch App Service Logs
+        run: |
+          az webapp log download --name kamil-webapp-unique --resource-group rg-user9 --log-file ./app-logs.zip
+          unzip ./app-logs.zip -d ./logs
+          cat ./logs/LogFiles/**/*.log || echo "Logs printed"
