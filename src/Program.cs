@@ -43,6 +43,7 @@ if (!isPlaceholder)
         try
         {
             context.Database.Migrate();
+            SeedData.Initialize(services);
         }
         catch (Exception ex)
         {
