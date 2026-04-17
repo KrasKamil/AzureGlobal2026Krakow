@@ -19,6 +19,12 @@ terraform {
   }
 }
 
+data "azurerm_user_assigned_identity" "identity_data" {
+  name                = "Kamil_Managed_identity"
+  resource_group_name = "rg-user9"
+}
+
+# 2. Moduł Key Vaulta (zostaje bez zmian, ale pilnuj klamry na końcu!)
 module "keyvault" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=keyvault/v1.0.0"
   keyvault_name = "kamilvuser9"
@@ -30,19 +36,20 @@ module "keyvault" {
     default_action = "Deny"
     bypass         = "AzureServices"
   }
-} 
+}
 
+# 3. Sekret (używamy poprawnego vault_id)
 resource "azurerm_key_vault_secret" "db_connection_string" {
   name         = "db-connection-string"
   value        = "Server=tcp:${module.mssql_server.server.fully_qualified_domain_name},1433;Initial Catalog=webappdb;Persist Security Info=False;User ID=sqladmin;Password=mojeSuperHaslo123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-  key_vault_id = module.keyvault.key_vault_id # Zmienione na key_vault_id
+  key_vault_id = module.keyvault.vault_id # <--- POPRAWIONE NA vault_id
 }
 
+# 4. Polisa dostępu (używamy danych z Data Source)
 resource "azurerm_key_vault_access_policy" "app_service_policy" {
-  key_vault_id = module.keyvault.key_vault_id
-  
-  tenant_id    = module.managed_identity.tenant_id
-  object_id    = module.managed_identity.principal_id
+  key_vault_id = module.keyvault.vault_id # <--- POPRAWIONE NA vault_id
+  tenant_id    = data.azurerm_user_assigned_identity.identity_data.tenant_id
+  object_id    = data.azurerm_user_assigned_identity.identity_data.principal_id
 
   secret_permissions = ["Get"]
 }
