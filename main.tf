@@ -71,6 +71,7 @@ resource "azurerm_mssql_database" "webappdb" {
   name           = "webappdb"
   server_id      = module.mssql_server.server.id
   sku_name       = "Basic" # Najtańsza opcja na warsztaty
+  storage_account_type = "Local"
 }
 
 module "application_insights" {
