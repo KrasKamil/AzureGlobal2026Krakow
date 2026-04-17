@@ -95,12 +95,14 @@ module "app_service" {
   identity_client_id  = module.managed_identity.managed_identity_client_id 
   app_settings = {
     "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key
+    "WEBSITES_PORT" = "8080"
+    "WEBSITES_CONTAINER_START_TIME_LIMIT" = "1800"
+    "ConnectionStrings__DefaultConnection" = "Server=tcp:${module.mssql_server.server.fully_qualified_domain_name},1433;Initial Catalog=webappdb;Persist Security Info=False;User ID=sqladmin;Password=mojeSuperHaslo123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     "DB_SERVER"   = module.mssql_server.server.fully_qualified_domain_name
     "DB_NAME"     = "webappdb"
     "DB_USER"     = "sqladmin"
     "DB_PASSWORD" = "mojeSuperHaslo123!"
-    "WEBSITES_PORT" = "8080"
-    "WEBSITES_CONTAINER_START_TIME_LIMIT" = "1800"
+   
   }
 }
 module "container_registry" {
