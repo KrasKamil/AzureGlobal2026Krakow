@@ -26,24 +26,26 @@ module "keyvault" {
     name     = "rg-user9"
     location = "polandcentral" 
   }
-network_acls = {
-  default_action = "Deny"
-  bypass = "AzureServices"
+  network_acls = {
+    default_action = "Deny"
+    bypass         = "AzureServices"
   }
-}
+} 
+
 resource "azurerm_key_vault_secret" "db_connection_string" {
   name         = "db-connection-string"
   value        = "Server=tcp:${module.mssql_server.server.fully_qualified_domain_name},1433;Initial Catalog=webappdb;Persist Security Info=False;User ID=sqladmin;Password=mojeSuperHaslo123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-  key_vault_id = module.keyvault.keyvault_id
+  key_vault_id = module.keyvault.key_vault_id # Zmienione na key_vault_id
 }
+
 resource "azurerm_key_vault_access_policy" "app_service_policy" {
-  key_vault_id = module.keyvault.keyvault_id
-  tenant_id    = module.managed_identity.managed_identity_tenant_id
-  object_id    = module.managed_identity.managed_identity_principal_id
+  key_vault_id = module.keyvault.key_vault_id
+  
+  tenant_id    = module.managed_identity.tenant_id
+  object_id    = module.managed_identity.principal_id
 
   secret_permissions = ["Get"]
 }
-
 
 module "managed_identity" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=managed_identity/v1.0.0"
@@ -52,8 +54,8 @@ module "managed_identity" {
     name     = "rg-user9"
     location = "polandcentral" 
   }
-
 }
+
 module "service_plan" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=service_plan/v2.0.0"
   app_service_plan_name = "KamilAppServicePlan"
@@ -68,6 +70,7 @@ tags = {
     Project     = "GlobalAzure2026"
   }
 }
+
 module "mssql_server" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=mssql_server/v1.0.0"
   
@@ -96,6 +99,7 @@ module "application_insights" {
     location = "polandcentral" 
   }
 }
+
 module "app_service" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=app_service/v1.0.0"
   app_service_name = "kamil-webapp-unique"
@@ -114,6 +118,7 @@ module "app_service" {
    
   }
 }
+
 module "container_registry" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=container_registry/v1.0.0"
   container_registry_name = "Containerregistrykamil"
