@@ -26,6 +26,11 @@ module "keyvault" {
     name     = "rg-user9"
     location = "polandcentral" 
   }
+network_acls = {
+  default_action = "Deny"
+  bypass = "AzureServices"
+  }
+}
 resource "azurerm_key_vault_secret" "db_connection_string" {
   name         = "db-connection-string"
   value        = "Server=tcp:${module.mssql_server.server.fully_qualified_domain_name},1433;Initial Catalog=webappdb;Persist Security Info=False;User ID=sqladmin;Password=mojeSuperHaslo123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
@@ -39,11 +44,6 @@ resource "azurerm_key_vault_access_policy" "app_service_policy" {
   secret_permissions = ["Get"]
 }
 
-network_acls = {
-  default_action = "Deny"
-  bypass = "AzureServices"
-  }
-}
 
 module "managed_identity" {
   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=managed_identity/v1.0.0"
