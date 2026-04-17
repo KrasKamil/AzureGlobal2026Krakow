@@ -95,7 +95,7 @@ module "app_service" {
     "DB_NAME"     = "webappdb"
     "DB_USER"     = "sqladmin"
     "DB_PASSWORD" = "mojeSuperHaslo123!"
-    "WEBSITES_PORT" = "8181"
+    "WEBSITES_PORT" = "8080"
     "WEBSITES_CONTAINER_START_TIME_LIMIT" = "1800"
   }
 }
