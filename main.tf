@@ -26,6 +26,19 @@ module "keyvault" {
     name     = "rg-user9"
     location = "polandcentral" 
   }
+resource "azurerm_key_vault_secret" "db_connection_string" {
+  name         = "db-connection-string"
+  value        = "Server=tcp:${module.mssql_server.server.fully_qualified_domain_name},1433;Initial Catalog=webappdb;Persist Security Info=False;User ID=sqladmin;Password=mojeSuperHaslo123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  key_vault_id = module.keyvault.keyvault_id
+}
+resource "azurerm_key_vault_access_policy" "app_service_policy" {
+  key_vault_id = module.keyvault.keyvault_id
+  tenant_id    = module.managed_identity.managed_identity_tenant_id
+  object_id    = module.managed_identity.managed_identity_principal_id
+
+  secret_permissions = ["Get"]
+}
+
 network_acls = {
   default_action = "Deny"
   bypass = "AzureServices"
@@ -97,11 +110,7 @@ module "app_service" {
     "INSTRUMENTATION_KEY" = module.application_insights.instrumentation_key
     "WEBSITES_PORT" = "8080"
     "WEBSITES_CONTAINER_START_TIME_LIMIT" = "1800"
-    "ConnectionStrings__DefaultConnection" = "Server=tcp:${module.mssql_server.server.fully_qualified_domain_name},1433;Initial Catalog=webappdb;Persist Security Info=False;User ID=sqladmin;Password=mojeSuperHaslo123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-    "DB_SERVER"   = module.mssql_server.server.fully_qualified_domain_name
-    "DB_NAME"     = "webappdb"
-    "DB_USER"     = "sqladmin"
-    "DB_PASSWORD" = "mojeSuperHaslo123!"
+    "ConnectionStrings__DefaultConnection" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.db_connection_string.versionless_id})"
    
   }
 }
