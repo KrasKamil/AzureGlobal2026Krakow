@@ -66,6 +66,7 @@ module "mssql_server" {
   sql_server_name    = "sql-kamil-user9" 
   sql_server_admin   = "sqladmin"
   sql_server_version = "12.0" # Dodany wymagany argument
+  database_name = "webappdb"
   
 }
 
