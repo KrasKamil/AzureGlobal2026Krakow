@@ -56,17 +56,17 @@ tags = {
   }
 }
 module "mssql_server" {
-   source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=mssql_server/v1.0.0"
-  
-  sql_server_name    = "sql-kamil-user9" 
-  sql_server_admin   = "sqladmin"
-  sql_server_password = "mojeSuperHaslo123!" 
+  source = "git::https://github.com/pchylak/global_azure_2026_ccoe.git?ref=mssql_server/v1.0.0"
   
   resource_group = {
     name     = "rg-user9"
     location = "polandcentral" 
   }
-  database_name = "webappdb" 
+
+  sql_server_name    = "sql-kamil-user9" 
+  sql_server_admin   = "sqladmin"
+  sql_server_version = "12.0" # Dodany wymagany argument
+  
 }
 
 module "application_insights" {
